@@ -38,6 +38,8 @@ export default function KonvertPage() {
       count = 0;
       localStorage.setItem('konversi_last_date', today);
     }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setUsageCount(count);
   }, []);
 
@@ -186,9 +188,13 @@ export default function KonvertPage() {
       setTimeout(() => {
         setStage('result');
       }, 500);
-    } catch (err: any) {
+    } catch (err: unknown) {
       clearInterval(progressInterval);
-      setErrorMsg(`Gagal: ${err.message}`);
+
+      // Validasi dan ambil pesan error dengan aman
+      const errorMessage = err instanceof Error ? err.message : 'Terjadi kesalahan saat konversi';
+
+      setErrorMsg(`Gagal: ${errorMessage}`);
       setStage('options');
     }
   };
@@ -207,7 +213,9 @@ export default function KonvertPage() {
 
   return (
     <>
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
       <div className="wrap">
